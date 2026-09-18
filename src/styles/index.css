@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  
+  body {
+    @apply bg-cream-50 text-charcoal-900 font-sans antialiased;
+    background-color: #FDFBF7;
+    color: #1A211C;
+  }
+
+  /* Custom scrollbar for modern feel */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #F4EFE2;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #CBD1CD;
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #9AC6A7;
+  }
+
+  /* Consistent keyboard-focus visibility site-wide. Components with their own
+     focus-visible ring (Button, Input) simply layer this subtle outline
+     underneath — every other interactive element (icon buttons, accordion
+     toggles, footer/social links, modal controls) gets one for free instead
+     of needing focus styles added one-by-one across the codebase. */
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid #4A945B;
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  /* Subtle botanical pattern overlay */
+  .bg-botanical-pattern {
+    background-image: radial-gradient(#2D5A3F 0.75px, transparent 0.75px), radial-gradient(#D5791E 0.75px, #FDFBF7 0.75px);
+    background-size: 30px 30px;
+    background-position: 0 0, 15px 15px;
+    opacity: 0.04;
+  }
+
+  /* Glassmorphism for floating nav and sticky cards */
+  .glass-card {
+    background: rgba(253, 251, 247, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(235, 226, 208, 0.7);
+  }
+
+  .glass-card-dark {
+    background: rgba(18, 48, 30, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(45, 90, 63, 0.3);
+  }
+
+  /* Scroll-reveal: subtle fade + rise, used by <Reveal> */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Organic, hand-drawn feeling blob shapes for photography placeholders */
+  .blob-shape {
+    border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
+  }
+  .blob-shape-alt {
+    border-radius: 42% 58% 61% 39% / 46% 41% 59% 54%;
+  }
+  @keyframes blob-morph {
+    0%, 100% { border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%; }
+    50% { border-radius: 42% 58% 61% 39% / 46% 41% 59% 54%; }
+  }
+  .animate-blob {
+    animation: blob-morph 14s ease-in-out infinite;
+  }
+
+  /* Gentle vertical float for decorative accents */
+  @keyframes gentle-float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  .animate-gentle-float {
+    animation: gentle-float 6s ease-in-out infinite;
+  }
+
+  /* Subtle page-to-page transition (keyed by route in Layout) */
+  @keyframes page-fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .page-transition {
+    animation: page-fade-in 0.35s ease-out;
+  }
+
+  /* Toast notification entrance */
+  @keyframes toast-in {
+    from { opacity: 0; transform: translateY(-10px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .toast-enter {
+    animation: toast-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .animate-blob,
+    .animate-gentle-float,
+    .page-transition,
+    .toast-enter {
+      animation: none;
+    }
+  }
+}
+
