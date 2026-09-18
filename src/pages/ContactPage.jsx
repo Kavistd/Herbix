@@ -161,7 +161,7 @@ export default function ContactPage() {
                 <div>
                   <h4 className="font-semibold text-white">Business Location</h4>
                   <p className="text-xs text-leaf-200/70 mt-0.5">
-                    Herbix Botanical Labs, Colombo, Sri Lanka
+                    Athurugiriya Road,Malabe, Colombo, Sri Lanka, 10115
                   </p>
                 </div>
               </div>
@@ -171,7 +171,7 @@ export default function ContactPage() {
                 <div>
                   <h4 className="font-semibold text-white">Email</h4>
                   <a href="mailto:care@herbixcomfort.com" className="text-xs text-ginger-300 hover:underline mt-0.5 block">
-                    care@herbixcomfort.com
+                    herbixnatural@gmail.com
                   </a>
                 </div>
               </div>
@@ -181,7 +181,7 @@ export default function ContactPage() {
                 <div>
                   <h4 className="font-semibold text-white">Phone</h4>
                   <p className="text-xs text-leaf-200/70 mt-0.5">
-                    +94 11 234 5678
+                    +94 71 884 7929
                   </p>
                 </div>
               </div>
