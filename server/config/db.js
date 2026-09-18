@@ -1,16 +1,26 @@
 const mongoose = require('mongoose');
 const { env } = require('./env');
 
+// Cached promise — reused across warm serverless invocations so
+// mongoose.connect() is never called more than once per container.
+let connectionPromise = null;
+
 /**
  * Connects to MongoDB via Mongoose.
  *
- * Deliberately does NOT crash the whole process if the initial connection
- * fails — Express still starts and /api/health still responds, which is
- * far easier to diagnose than a silently-dead server. Mongoose will keep
- * retrying in the background per its default behavior, and the listeners
- * below report state changes to the console.
+ * Safe for both traditional (server.js) and serverless (api/index.js) use:
+ * - First call opens the connection and caches the promise.
+ * - Subsequent calls on a warm container return immediately.
+ * - Deliberately does NOT crash the process on failure so /api/health
+ *   still responds with a useful diagnostic state.
  */
 async function connectDB() {
+  // Already connected — nothing to do.
+  if (mongoose.connection.readyState === 1) return;
+
+  // Connection attempt already in flight — wait for it.
+  if (connectionPromise) return connectionPromise;
+
   mongoose.set('strictQuery', true);
 
   mongoose.connection.on('connected', () => {
@@ -19,23 +29,26 @@ async function connectDB() {
 
   mongoose.connection.on('error', (err) => {
     console.error(`[db] Mongoose connection error: ${err.message}`);
+    // Allow a fresh attempt next request if this one failed.
+    connectionPromise = null;
   });
 
   mongoose.connection.on('disconnected', () => {
     console.warn('[db] Mongoose disconnected');
+    connectionPromise = null;
   });
 
-  try {
-    await mongoose.connect(env.MONGODB_URI, {
-      serverSelectionTimeoutMS: 5000
+  connectionPromise = mongoose
+    .connect(env.MONGODB_URI, { serverSelectionTimeoutMS: 10000 })
+    .catch((err) => {
+      connectionPromise = null;
+      console.error(
+        `[db] Initial connection attempt failed: ${err.message}\n` +
+        `      Routes touching the database will fail until MongoDB is reachable.`
+      );
     });
-  } catch (err) {
-    console.error(
-      `[db] Initial connection attempt failed: ${err.message}\n` +
-      `      The API will keep running, but any route touching the database will fail ` +
-      `until MongoDB is reachable at MONGODB_URI.`
-    );
-  }
+
+  return connectionPromise;
 }
 
 module.exports = connectDB;
