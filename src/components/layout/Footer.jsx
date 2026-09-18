@@ -198,17 +198,17 @@ export default function Footer() {
             <ul className="space-y-3 text-xs text-cream-200/80">
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-ginger-400 shrink-0 mt-0.5" />
-                <span>Herbix Botanicals, Colombo, Sri Lanka (Available worldwide)</span>
+                <span>Athurugiriya Road,Malabe, Colombo, Sri Lanka, 10115 (Available worldwide)</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-ginger-400 shrink-0" />
                 <a href="mailto:care@herbixcomfort.com" className="hover:text-white transition-colors">
-                  care@herbixcomfort.com
+                  herbixnatural@gmail.com
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-ginger-400 shrink-0" />
-                <span>+94 11 234 5678 (Mon–Fri, 9am–6pm IST)</span>
+                <span>+94 71 884 7929 (Mon–Fri, 9am–6pm IST)</span>
               </li>
             </ul>
 
